@@ -1,0 +1,49 @@
+default_stages: [commit]
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.3.0
+  hooks:
+    - id: check-yaml
+      exclude: chart/|metadata.yaml
+    - id: end-of-file-fixer
+    - id: trailing-whitespace
+    - id: check-merge-conflict
+    - id: detect-private-key
+- repo: https://github.com/antonbabenko/pre-commit-terraform
+  rev: v1.74.1
+  hooks:
+    - id: terraform_fmt
+    - id: terraform_validate
+      files: ^examples/
+    - id: terraform_docs
+      args: ['--args=--hide=providers']
+    - id: terraform_tflint
+      args:
+        # - --args=--enable-rule=terraform_unused_declarations
+        - --args=--enable-rule=terraform_deprecated_index
+        - --args=--enable-rule=terraform_comment_syntax
+        - --args=--enable-rule=terraform_documented_outputs
+        - --args=--enable-rule=terraform_documented_variables
+        - --args=--enable-rule=terraform_typed_variables
+        - --args=--enable-rule=terraform_naming_convention
+        - --args=--enable-rule=terraform_required_version
+        - --args=--enable-rule=terraform_required_providers
+        - --args=--enable-rule=terraform_unused_required_providers
+        - --args=--enable-rule=terraform_standard_module_structure
+    - id: terragrunt_fmt
+    - id: terragrunt_validate
+    - id: terraform_tfsec
+      files: '\.tf'
+    - id: terraform_checkov
+      args:
+        - --args=--skip-check=.scv
+        - --args=--skip-check=Dockerfile
+- repo: local
+  hooks:
+    - id: golangci-lint
+      name: golangci-lint
+      description: Fast linters runner for Go.
+      entry: golangci-lint run --fix
+      types: [go]
+      language: golang
+      pass_filenames: false

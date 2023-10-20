@@ -1,77 +1,119 @@
-<!-- This should be the location of the title of the repository, normally the short name -->
-# repo-template
+# PowerVPN Client to Site Server
 
-<!-- Build Status, is a great thing to have at the top of your repository, it shows that you take your CI/CD as first class citizens -->
-<!-- [![Build Status](https://travis-ci.org/jjasghar/ibm-cloud-cli.svg?branch=master)](https://travis-ci.org/jjasghar/ibm-cloud-cli) -->
+## Overview
 
-<!-- Not always needed, but a scope helps the user understand in a short sentance like below, why this repo exists -->
-## Scope
+This Terraform module will create a VPC VPN Gateway and attach it to a new or existing PowerVS
+Workspace. Providing secure access to IBM Cloud Power infrastructure.
 
-The purpose of this project is to provide a template for new open source repositories.
+This Terraform module deploys the following infrastructure:
 
-<!-- A more detailed Usage or detailed explaination of the repository here -->
-## Usage
+- VPC
+- VPC Subnet
+- VPC Security Groups
+- VPC VPN Gateway
+- PowerVS Workspace (Optional)
+- Transit Gateway (Optional)
+- Cloud Connection w/DirectLink* (Optional)
 
-This repository contains some example best practices for open source repositories:
+\* Only in locations without
+[Power Edge Routers](https://cloud.ibm.com/docs/power-iaas?topic=power-iaas-per)
 
-* [LICENSE](LICENSE)
-* [README.md](README.md)
-* [CONTRIBUTING.md](CONTRIBUTING.md)
-* [MAINTAINERS.md](MAINTAINERS.md)
-<!-- A Changelog allows you to track major changes and things that happen, https://github.com/github-changelog-generator/github-changelog-generator can help automate the process -->
-* [CHANGELOG.md](CHANGELOG.md)
+### Deployment Model
 
-> These are optional
+![Deployment Model](./doc/materials/site-site.png)
 
-<!-- The following are OPTIONAL, but strongly suggested to have in your repository. -->
-* [dco.yml](.github/dco.yml) - This enables DCO bot for you, please take a look https://github.com/probot/dco for more details.
-* [travis.yml](.travis.yml) - This is a example `.travis.yml`, please take a look https://docs.travis-ci.com/user/tutorial/ for more details.
+## Setup Requirements
 
-These may be copied into a new or existing project to make it easier for developers not on a project team to collaborate.
+### Prerequisites
 
-<!-- A notes section is useful for anything that isn't covered in the Usage or Scope. Like what we have below. -->
-## Notes
+#### Upgrading your IBM Cloud Account
 
-**NOTE: While this boilerplate project uses the Apache 2.0 license, when
-establishing a new repo using this template, please use the
-license that was approved for your project.**
+To order and use IBM Cloud services, billing information is required for your account. See
+[Upgrading Your Account](https://cloud.ibm.com/docs/account?topic=account-upgrading-account).
 
-**NOTE: This repository has been configured with the [DCO bot](https://github.com/probot/dco).
-When you set up a new repository that uses the Apache license, you should
-use the DCO to manage contributions. The DCO bot will help enforce that.
-Please contact one of the IBM GH Org stewards.**
+#### Install Terraform
 
-<!-- Questions can be useful but optional, this gives you a place to say, "This is how to contact this project maintainers or create PRs -->
-If you have any questions or issues you can create a new [issue here][issues].
+If you wish to run Terraform locally, see
+[Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli#install-terraform).
 
-Pull requests are very welcome! Make sure your patches are well tested.
-Ideally create a topic branch for every separate change you make. For
-example:
+#### IBM Cloud API Key
 
-1. Fork the repo
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+You must supply an IBM Cloud API key so that Terraform can connect to the IBM Cloud Terraform
+provider. See
+[Create API Key](https://cloud.ibm.com/docs/account?topic=account-userapikey&interface=ui#create_user_key).
 
-## License
+## Variable Behavior
 
-All source files must include a Copyright and License header. The SPDX license header is 
-preferred because it can be easily scanned.
+There are a number of variables defined in variables.tf used by this Terraform module to deploy and
+configure your infrastructure. This section will describe variable behavior. See
+[variables.tf](./variables.tf) for full list of variables with their descriptions, defaults, and
+conditions.
 
-If you would like to see the detailed LICENSE click [here](LICENSE).
+## Support
 
-```text
-#
-# Copyright IBM Corp. 2020-
-# SPDX-License-Identifier: Apache2.0
-#
-```
-## Authors
+If you have problems or questions when using the underlying IBM Cloud infrastructure, you can get
+help by searching for information or by asking questions through one of the forums. You can also
+create a case in the
+[IBM Cloud console](https://cloud.ibm.com/unifiedsupport/supportcenter).
 
-Optionally, you may include a list of authors, though this is redundant with the built-in
-GitHub list of contributors.
+For information about opening an IBM support ticket, see
+[Contacting support](https://cloud.ibm.com/docs/get-support?topic=get-support-using-avatar).
 
-- Author: New OpenSource IBMer <new-opensource-ibmer@ibm.com>
+To report bugs or make feature requests regarding this Terraform module, please create an issue in
+this repository.
 
-[issues]: https://github.com/IBM/repo-template/issues/new
+## References
+
+- [What is Terraform](https://www.terraform.io/intro)
+- [IBM Cloud provider Terraform getting started](https://cloud.ibm.com/docs/ibm-cloud-provider-for-terraform?topic=ibm-cloud-provider-for-terraform-getting-started)
+- [IBM Cloud VPC VPN Gateway](https://cloud.ibm.com/docs/vpc?topic=vpc-using-vpn)
+- [IBM Cloud PowerVS](https://www.ibm.com/products/power-virtual-server)
+
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | 1.56.0 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | 3.5.1 |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_cloud_connection"></a> [cloud\_connection](#module\_cloud\_connection) | ./modules/cloud-connection | n/a |
+| <a name="module_power"></a> [power](#module\_power) | ./modules/power | n/a |
+| <a name="module_transit"></a> [transit](#module\_transit) | ./modules/transit | n/a |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | ./modules/vpc | n/a |
+| <a name="module_vpn"></a> [vpn](#module\_vpn) | ./modules/vpn | n/a |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [random_string.resource_identifier](https://registry.terraform.io/providers/hashicorp/random/3.5.1/docs/resources/string) | resource |
+| [ibm_resource_group.group](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.56.0/docs/data-sources/resource_group) | data source |
+| [ibm_resource_instance.power_workspace](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.56.0/docs/data-sources/resource_instance) | data source |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_client_cidrs"></a> [client\_cidrs](#input\_client\_cidrs) | List of CIDRs for the client network to be routed by the VPN gateway to the Power and VPC network.<br><br>Use the format ["cidr\_1", "cidr\_2"] to specify this variable. | `list(string)` | n/a | yes |
+| <a name="input_ibmcloud_api_key"></a> [ibmcloud\_api\_key](#input\_ibmcloud\_api\_key) | The IBM Cloud platform API key needed to deploy IAM enabled resources | `string` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | The name used for the new Power Workspace, Transit Gateway, and VPC.<br>Other resources created will use this for their basename and be suffixed by a random identifier. | `string` | n/a | yes |
+| <a name="input_peer_address"></a> [peer\_address](#input\_peer\_address) | The peer address identifies the gateway address that is not within the address prefixes for your VPC. | `string` | n/a | yes |
+| <a name="input_power_cidrs"></a> [power\_cidrs](#input\_power\_cidrs) | List of CIDRs for the PowerVS Workspace to be routed by the VPN gateway to the client network.<br><br>Use the format ["cidr\_1", "cidr\_2"] to specify this variable. | `list(string)` | n/a | yes |
+| <a name="input_power_cloud_connection_speed"></a> [power\_cloud\_connection\_speed](#input\_power\_cloud\_connection\_speed) | Optional variable to specify the speed of the cloud connection (speed in megabits per second).<br>This only applies to locations WITHOUT Power Edge Routers.<br><br>Supported values are 50, 100, 200, 500, 1000, 2000, 5000, 10000. Default Value is 1000. | `number` | `1000` | no |
+| <a name="input_power_workspace_location"></a> [power\_workspace\_location](#input\_power\_workspace\_location) | The location used to create the power workspace.<br><br>Available locations are: dal10, dal12, us-south, us-east, wdc06, wdc07, sao01, sao04, tor01, mon01, eu-de-1, eu-de-2, lon04, lon06, syd04, syd05, tok04, osa21<br>Please see [PowerVS Locations](https://cloud.ibm.com/docs/power-iaas?topic=power-iaas-creating-power-virtual-server) for an updated list. | `string` | n/a | yes |
+| <a name="input_power_workspace_name"></a> [power\_workspace\_name](#input\_power\_workspace\_name) | Optional variable to specify the name of an existing power workspace.<br>If supplied the workspace will be used to connect the VPN with. | `string` | `""` | no |
+| <a name="input_preshared_key"></a> [preshared\_key](#input\_preshared\_key) | Key configured on the peer gateway. The key is usually a complex string similar to a password, for example: Lsda5D.<br><br>Preshared key must be at least 6 characters. | `string` | n/a | yes |
+| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Resource Group to create new resources in (Resource Group name is case sensitive). | `string` | n/a | yes |
+| <a name="input_transit_gateway_name"></a> [transit\_gateway\_name](#input\_transit\_gateway\_name) | Optional variable to specify the name of an existing transit gateway, if supplied it will be assumed that you've connected<br>your power workspace to it. A connection to the VPC containing the VPN Server will be added, but not for the Power Workspace.<br>Supplying this variable will also suppress Power Workspace creation. | `string` | `""` | no |
+| <a name="input_vpn_subnet_cidr"></a> [vpn\_subnet\_cidr](#input\_vpn\_subnet\_cidr) | Optional variable to specify the CIDR for subnet the VPN will be in. You should only need to change this<br>if you have a conflict with your Power Workstation Subnets or with a VPC connected with this solution. | `string` | `"10.134.0.0/28"` | no |
+
+## Outputs
+
+No outputs.
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
