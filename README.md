@@ -1,4 +1,4 @@
-# PowerVPN Client to Site Server
+# PowerVPN Site to Site Server
 
 ## Overview
 
