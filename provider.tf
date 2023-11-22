@@ -6,14 +6,14 @@ terraform {
   required_providers {
     ibm = {
       source  = "IBM-Cloud/ibm"
-      version = "1.56.0"
+      version = "1.58.1"
     }
     random = {
       source  = "hashicorp/random"
       version = "3.5.1"
     }
   }
-  required_version = ">= 1.0.0"
+  required_version = ">= 1.5.0"
 }
 
 ##############################################################################
@@ -24,8 +24,8 @@ terraform {
 ##############################################################################
 
 locals {
-  location_lookup = yamldecode(file("./data/locations.yaml"))
-  location        = local.location_lookup[var.power_workspace_location]
+  location_lookup = yamldecode(file(var.data_location_file_path))
+  location        = local.location_lookup[lower(var.power_workspace_location)]
 }
 
 provider "ibm" {

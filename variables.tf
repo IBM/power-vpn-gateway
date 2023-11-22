@@ -58,9 +58,15 @@ variable "preshared_key" {
     Preshared key must be at least 6 characters.
   EOD
   type        = string
+
   validation {
     condition     = length(var.preshared_key) >= 6
     error_message = "Preshared Key must be at least 6 characters."
+  }
+
+  validation {
+    condition     = can(regex("^[-+&!@#$%^*(),.:_a-zA-Z0-9]+$", var.preshared_key))
+    error_message = "Preshared key must match the pattern ^[-+&!@#$%^*(),.:_a-zA-Z0-9]+$"
   }
 }
 
@@ -102,7 +108,7 @@ variable "power_workspace_name" {
 variable "vpn_subnet_cidr" {
   description = <<-EOD
     Optional variable to specify the CIDR for subnet the VPN will be in. You should only need to change this
-    if you have a conflict with your Power Workstation Subnets or with a VPC connected with this solution.
+    if you have a conflict with your Power Workspace Subnets or with a VPC connected with this solution.
   EOD
   type        = string
   default     = "10.134.0.0/28"
@@ -112,4 +118,12 @@ variable "data_location_file_path" {
   description = "Where the file with PER location data is stored. This variable is used for testing, and should not normally be altered."
   type        = string
   default     = "./data/locations.yaml"
+}
+
+variable "create_default_vpc_address_prefixes" {
+  description = <<-EOD
+    Optional variable to indicate whether a default address prefix should be created for each zone in this VPC.
+  EOD
+  type        = bool
+  default     = true
 }

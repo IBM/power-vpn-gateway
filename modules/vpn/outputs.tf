@@ -1,4 +1,4 @@
-output "public_ip" {
+output "endpoint" {
   value       = ibm_is_vpn_gateway.vpc.public_ip_address
-  description = "Public IP of VPN Gateway"
+  description = "The internet accessible endpoint for the VPN"
 }
