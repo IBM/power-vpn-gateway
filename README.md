@@ -172,7 +172,7 @@ this repository.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_client_cidrs"></a> [client\_cidrs](#input\_client\_cidrs) | List of CIDRs for the client network to be routed by the VPN gateway to the Power and VPC network.<br><br>Use the format ["cidr\_1", "cidr\_2"] to specify this variable. | `list(string)` | n/a | yes |
-| <a name="input_create_default_vpc_address_prefixes"></a> [create\_default\_vpc\_address\_prefixes](#input\_create\_default\_vpc\_address\_prefixes) | Optional variable to indicate whether a default address prefix should be created for each zone in this VPC. | `bool` | `true` | no |
+| <a name="input_create_default_vpc_address_prefixes"></a> [create\_default\_vpc\_address\_prefixes](#input\_create\_default\_vpc\_address\_prefixes) | Optional variable to indicate whether a default address prefix should be created for each zone in this VPC. | `bool` | `false` | no |
 | <a name="input_data_location_file_path"></a> [data\_location\_file\_path](#input\_data\_location\_file\_path) | Debug variable to indicated where the file with PER location data is stored.<br>This variable is used for testing, and should not normally be altered. | `string` | `"./data/locations.yaml"` | no |
 | <a name="input_ibmcloud_api_key"></a> [ibmcloud\_api\_key](#input\_ibmcloud\_api\_key) | The IBM Cloud platform API key needed to deploy IAM enabled resources | `string` | n/a | yes |
 | <a name="input_identity_local"></a> [identity\_local](#input\_identity\_local) | Optional local identity for VPN configuration. Must also specify `identity_remote`. | `string` | `""` | no |

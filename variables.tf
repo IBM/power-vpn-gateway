@@ -134,7 +134,7 @@ variable "create_default_vpc_address_prefixes" {
     Optional variable to indicate whether a default address prefix should be created for each zone in this VPC.
   EOD
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "data_location_file_path" {
