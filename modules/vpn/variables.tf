@@ -44,3 +44,33 @@ variable "additional_local_cidrs" {
   type        = list(string)
   default     = []
 }
+
+variable "identity_local" {
+  description = "Optional local identity for VPN configuration"
+  type        = string
+  default     = ""
+}
+
+variable "identity_remote" {
+  description = "Optional remote identity for VPN configuration"
+  type        = string
+  default     = ""
+}
+
+variable "vsi_vpn_base_image_name" {
+  description = "Image used to create the VSI for VPN with identity support"
+  type        = string
+  default     = "ibm-redhat-9-2-minimal-amd64-2"
+}
+
+variable "vsi_vpn_profile" {
+  description = "Instance profile to use for VPN VSI with identity support"
+  type        = string
+  default     = "bx2-2x8"
+}
+
+variable "vsi_vpn_ssh_key_name" {
+  description = "Optional ssh key name to use with VPN VSI (debug)"
+  type        = string
+  default     = ""
+}

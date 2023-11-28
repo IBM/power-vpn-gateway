@@ -36,6 +36,9 @@ module "vpn" {
   vpc_id                 = module.vpc.vpc.id
   preshared_key          = var.preshared_key
   peer_address           = var.peer_address
+  identity_local         = var.identity_local
+  identity_remote        = var.identity_remote
+  vsi_vpn_ssh_key_name   = var.vsi_vpn_ssh_key_name
 }
 
 # If a power workspace name is provided, look it up

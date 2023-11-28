@@ -45,6 +45,9 @@ variable "client_cidrs" {
 variable "power_cidrs" {
   description = <<-EOD
     List of CIDRs for the PowerVS Workspace to be routed by the VPN gateway to the client network.
+    Because these will be connected through Direct Link, please avoid using IPs in these CIDRs:
+    10.0.0.0/14, 10.200.0.0/14, 10.198.0.0/15, and 10.254.0.0/16. Otherwise, they may not be
+    routed through the VPN.
 
     Use the format ["cidr_1", "cidr_2"] to specify this variable.
   EOD
@@ -53,15 +56,15 @@ variable "power_cidrs" {
 
 variable "preshared_key" {
   description = <<-EOD
-    Key configured on the peer gateway. The key is usually a complex string similar to a password, for example: Lsda5D.
+    Key configured on the peer gateway. The key is usually a complex string similar to a password, for example: 3j9atsxOzAtr1O1VEY.
 
-    Preshared key must be at least 6 characters.
+    Preshared key must be at least 16 characters.
   EOD
   type        = string
 
   validation {
-    condition     = length(var.preshared_key) >= 6
-    error_message = "Preshared Key must be at least 6 characters."
+    condition     = length(var.preshared_key) >= 16
+    error_message = "Preshared Key must be at least 16 characters."
   }
 
   validation {
@@ -114,10 +117,16 @@ variable "vpn_subnet_cidr" {
   default     = "10.134.0.0/28"
 }
 
-variable "data_location_file_path" {
-  description = "Where the file with PER location data is stored. This variable is used for testing, and should not normally be altered."
+variable "identity_local" {
+  description = "Optional local identity for VPN configuration. Must also specify `identity_remote`."
   type        = string
-  default     = "./data/locations.yaml"
+  default     = ""
+}
+
+variable "identity_remote" {
+  description = "Optional remote identity for VPN configuration. Must also specify `identity_local`."
+  type        = string
+  default     = ""
 }
 
 variable "create_default_vpc_address_prefixes" {
@@ -126,4 +135,22 @@ variable "create_default_vpc_address_prefixes" {
   EOD
   type        = bool
   default     = true
+}
+
+variable "data_location_file_path" {
+  description = <<-EOD
+    Debug variable to indicated where the file with PER location data is stored.
+    This variable is used for testing, and should not normally be altered.
+  EOD
+  type        = string
+  default     = "./data/locations.yaml"
+}
+
+variable "vsi_vpn_ssh_key_name" {
+  description = <<-EOD
+    Debug variable to specify an existing ssh key by name to use with VPN VSI (identity support).
+    Variables `identity_remote` and `identity_local` must also be specified.
+  EOD
+  type        = string
+  default     = ""
 }
