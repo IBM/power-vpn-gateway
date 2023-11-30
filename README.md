@@ -46,7 +46,7 @@ provider. See
 
 This automation will require some network planning before deploying. You will need to know the IP
 space you plan to use (or are using) for your PowerVS Workspace and which parts of your on-prem
-network you wish to be routable. These will be specified using the `power_cidrs` and `client_cidrs`
+network you wish to be routable. These will be specified using the `power_cidrs` and `client_cidrs`*
 variables respectively. You do not have to know the exact subnets you plan to use, but rather pick a
 CIDR(s) that will encompass them.
 
@@ -57,6 +57,10 @@ Otherwise, they may not be routed through the VPN. See
 for more information. You also must avoid using the same IP space as the VPN gateway is configured
 to use. By default this is `10.134.0.0/28`, but can be changed by specifying the optional variable
 `vpn_subnet_cidr`.
+
+* Note: An address prefix is added to the VPC for each of the `client_cidrs` supplied. If the prefix
+is smaller than a `/29` network, it will be expanded to `/29`. This does not affect the VPN policy,
+only the internal networking of the VPC.
 
 ### Deployment
 

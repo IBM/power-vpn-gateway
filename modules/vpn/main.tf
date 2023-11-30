@@ -240,5 +240,5 @@ resource "ibm_is_vpc_address_prefix" "client_prefix" {
   name     = format("%s-%s-%s", var.name, "prefix-vpn-client", each.key)
   zone     = var.zone
   vpc      = var.vpc_id
-  cidr     = each.value
+  cidr     = split("/", each.value)[1] > 29 ? format("%s/29", cidrhost(format("%s/29", split("/", each.value)[0]), 0)) : each.value
 }
