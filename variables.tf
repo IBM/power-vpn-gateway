@@ -118,13 +118,25 @@ variable "vpn_subnet_cidr" {
 }
 
 variable "identity_local" {
-  description = "Optional local identity for VPN configuration. Must also specify `identity_remote`."
+  description = <<-EOD
+    Optional local identity for the VPN configuration. The local identity is the identity of this VPN gateway.
+    The local identity can be an FQDN or any arbitrary string. However, it must match the remote identity setting of the connecting VPN gateway.
+    For example, the local identity of this VPN gateway must be the same as the remote identity set for the on-prem VPN gateway.
+
+    The variable `identity_remote` must also be specified.
+  EOD
   type        = string
   default     = ""
 }
 
 variable "identity_remote" {
-  description = "Optional remote identity for VPN configuration. Must also specify `identity_local`."
+  description = <<-EOD
+    Optional remote identity for the VPN configuration. The remote identity is the identity of the connecting VPN.
+    The remote identity can be an FQDN or any arbitrary string. However, it must match the local identity setting of the connecting VPN gateway.
+    For example, the local identity of the on-prem VPN gateway must be the same as the remote identity set for this VPN gateway.
+
+    The variable `identity_remote` must also be specified.
+  EOD
   type        = string
   default     = ""
 }

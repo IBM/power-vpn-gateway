@@ -31,6 +31,18 @@ This Terraform module deploys the following infrastructure:
 To order and use IBM Cloud services, billing information is required for your account. See
 [Upgrading Your Account](https://cloud.ibm.com/docs/account?topic=account-upgrading-account).
 
+#### IAM Access
+
+You will need the following IAM access, or higher, to deploy this VPN
+
+|Service Name</br>(Resource Type)|Service Access|Platform Access|
+|---|---|---|
+|VPC Infrastructure Services</br>  - Virtual Private Cloud</br>  - Subnet</br>  - Security Group for VPC</br>  - VPN for VPC</br> - Virtual Server for VPC*||Editor|
+|Transit Gateway</br>  - Transit Gateway|Manager|Editor|
+|Workspace for Power Systems Virtual Server|Manager|Editor|
+
+\* Virtual Server for VPC access is only needed when specifying local and remote identities
+
 #### Install Terraform
 
 If you wish to run Terraform locally, see
@@ -137,6 +149,13 @@ For information about opening an IBM support ticket, see
 To report bugs or make feature requests regarding this Terraform module, please create an issue in
 this repository.
 
+## Further Reading
+
+To understand the details for general Power Systems communication through VPC, including architecture
+and troubleshooting, see the 
+[Power Systems communication through a VPC Transit Hub](https://test.cloud.ibm.com/docs/solution-tutorials?topic=solution-tutorials-vpc-transit-power)
+solution tutorial.
+
 ## References
 
 - [What is Terraform](https://www.terraform.io/intro)
@@ -179,8 +198,8 @@ this repository.
 | <a name="input_create_default_vpc_address_prefixes"></a> [create\_default\_vpc\_address\_prefixes](#input\_create\_default\_vpc\_address\_prefixes) | Optional variable to indicate whether a default address prefix should be created for each zone in this VPC. | `bool` | `false` | no |
 | <a name="input_data_location_file_path"></a> [data\_location\_file\_path](#input\_data\_location\_file\_path) | Debug variable to indicated where the file with PER location data is stored.<br>This variable is used for testing, and should not normally be altered. | `string` | `"./data/locations.yaml"` | no |
 | <a name="input_ibmcloud_api_key"></a> [ibmcloud\_api\_key](#input\_ibmcloud\_api\_key) | The IBM Cloud platform API key needed to deploy IAM enabled resources | `string` | n/a | yes |
-| <a name="input_identity_local"></a> [identity\_local](#input\_identity\_local) | Optional local identity for VPN configuration. Must also specify `identity_remote`. | `string` | `""` | no |
-| <a name="input_identity_remote"></a> [identity\_remote](#input\_identity\_remote) | Optional remote identity for VPN configuration. Must also specify `identity_local`. | `string` | `""` | no |
+| <a name="input_identity_local"></a> [identity\_local](#input\_identity\_local) | Optional local identity for the VPN configuration. The local identity is the identity of this VPN gateway.<br>The local identity can be an FQDN or any arbitrary string. However, it must match the remote identity setting of the connecting VPN gateway.<br>For example, the local identity of this VPN gateway must be the same as the remote identity set for the on-prem VPN gateway.<br><br>The variable `identity_remote` must also be specified. | `string` | `""` | no |
+| <a name="input_identity_remote"></a> [identity\_remote](#input\_identity\_remote) | Optional remote identity for the VPN configuration. The remote identity is the identity of the connecting VPN.<br>The remote identity can be an FQDN or any arbitrary string. However, it must match the local identity setting of the connecting VPN gateway.<br>For example, the local identity of the on-prem VPN gateway must be the same as the remote identity set for this VPN gateway.<br><br>The variable `identity_remote` must also be specified. | `string` | `""` | no |
 | <a name="input_name"></a> [name](#input\_name) | The name used for the new Power Workspace, Transit Gateway, and VPC.<br>Other resources created will use this for their basename and be suffixed by a random identifier. | `string` | n/a | yes |
 | <a name="input_peer_address"></a> [peer\_address](#input\_peer\_address) | The peer address identifies the gateway address that is not within the address prefixes for your VPC. | `string` | n/a | yes |
 | <a name="input_power_cidrs"></a> [power\_cidrs](#input\_power\_cidrs) | List of CIDRs for the PowerVS Workspace to be routed by the VPN gateway to the client network.<br>Because these will be connected through Direct Link, please avoid using IPs in these CIDRs:<br>10.0.0.0/14, 10.200.0.0/14, 10.198.0.0/15, and 10.254.0.0/16. Otherwise, they may not be<br>routed through the VPN.<br><br>Use the format ["cidr\_1", "cidr\_2"] to specify this variable. | `list(string)` | n/a | yes |
