@@ -60,6 +60,7 @@ module "power" {
 
 locals {
   power_workspace = var.transit_gateway_name == "" ? var.power_workspace_name == "" ? module.power[0].workspace : data.ibm_resource_instance.power_workspace[0] : null
+  per_enabled     = var.per_override ? true : local.location.per_enabled
 }
 
 # For locations that are not PER enabled create a Cloud Connection that is Transit Gateway enabled.
@@ -67,7 +68,7 @@ locals {
 # If an existing Transit Gateway is supplied, we assume that this connection (or PER) is already
 # connected to the Transit Gateway and will not create the cloud connection to enable it.
 module "cloud_connection" {
-  count                  = var.transit_gateway_name != "" || local.location.per_enabled ? 0 : 1
+  count                  = var.transit_gateway_name != "" || local.per_enabled ? 0 : 1
   source                 = "./modules/cloud-connection"
   name                   = local.uname
   cloud_connection_speed = var.power_cloud_connection_speed
@@ -93,7 +94,7 @@ locals {
     network_type = "directlink"
     network_id   = length(module.cloud_connection) == 0 ? "" : module.cloud_connection[0].dl_gateway.crn
   }
-  connections = var.transit_gateway_name != "" ? [local.vpc_connection] : local.location.per_enabled ? [local.vpc_connection, local.power_connection] : [local.vpc_connection, local.directlink_connection]
+  connections = var.transit_gateway_name != "" ? [local.vpc_connection] : local.per_enabled ? [local.vpc_connection, local.power_connection] : [local.vpc_connection, local.directlink_connection]
 }
 
 module "transit" {

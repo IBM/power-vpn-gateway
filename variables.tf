@@ -12,8 +12,8 @@ variable "power_workspace_location" {
   description = <<-EOD
     The location used to create the power workspace.
 
-    Available locations are: dal10, dal12, us-south, us-east, wdc06, wdc07, sao01, sao04, tor01, mon01, eu-de-1, eu-de-2, lon04, lon06, syd04, syd05, tok04, osa21
-    Please see [PowerVS Locations](https://cloud.ibm.com/docs/power-iaas?topic=power-iaas-creating-power-virtual-server) for an updated list.
+    Available locations are: dal10, dal12, us-south, us-east, wdc06, wdc07, sao01, sao04, tor01, mon01, eu-de-1, eu-de-2, lon04, lon06, syd04, syd05, tok04, osa21, mad02, mad04.
+    Please see [PowerVS Locations](https://cloud.ibm.com/docs/power-iaas?topic=power-iaas-creating-power-virtual-server) for a complete list of PowerVS locations.
   EOD
   type        = string
 }
@@ -165,4 +165,15 @@ variable "vsi_vpn_ssh_key_name" {
   EOD
   type        = string
   default     = ""
+}
+
+variable "per_override" {
+  description = <<-EOD
+    Optional variable to force the PowerVS location to be seen as PER enabled by this automation.
+    When set `true`, this will force the use of PER instead of creating Cloud Connections.
+    Set `true` when a location has been upgraded to PER before this automation has been made aware.
+    See [Getting started with the Power Edge Router](https://cloud.ibm.com/docs/power-iaas?topic=power-iaas-per) for a complete list of PER enabled locations.
+  EOD
+  type        = bool
+  default     = false
 }
