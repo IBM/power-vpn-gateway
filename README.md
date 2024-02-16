@@ -169,7 +169,7 @@ solution tutorial.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.0 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | 1.58.1 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | 1.62.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | 3.5.1 |
 
 ## Modules
@@ -187,8 +187,8 @@ solution tutorial.
 | Name | Type |
 |------|------|
 | [random_string.resource_identifier](https://registry.terraform.io/providers/hashicorp/random/3.5.1/docs/resources/string) | resource |
-| [ibm_resource_group.group](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.58.1/docs/data-sources/resource_group) | data source |
-| [ibm_resource_instance.power_workspace](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.58.1/docs/data-sources/resource_instance) | data source |
+| [ibm_resource_group.group](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.62.0/docs/data-sources/resource_group) | data source |
+| [ibm_resource_instance.power_workspace](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.62.0/docs/data-sources/resource_instance) | data source |
 
 ## Inputs
 
