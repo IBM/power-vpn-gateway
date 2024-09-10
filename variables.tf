@@ -68,7 +68,7 @@ variable "preshared_key" {
   }
 
   validation {
-    condition     = can(regex("^[-+&!@#$%^*(),.:_a-zA-Z0-9]+$", var.preshared_key))
+    condition     = can(regex("^[-+!@#$%^*(),.:_a-zA-Z0-9]+$", var.preshared_key))
     error_message = "Preshared key must match the pattern ^[-+&!@#$%^*(),.:_a-zA-Z0-9]+$"
   }
 }
